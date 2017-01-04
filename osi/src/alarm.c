@@ -96,6 +96,7 @@ struct alarm_t {
 int64_t TIMER_INTERVAL_FOR_WAKELOCK_IN_MS = 3000;
 static const clockid_t CLOCK_ID = CLOCK_BOOTTIME;
 
+#define KERNEL_MISSING_CLOCK_BOOTTIME_ALARM TRUE
 #if defined(KERNEL_MISSING_CLOCK_BOOTTIME_ALARM) && (KERNEL_MISSING_CLOCK_BOOTTIME_ALARM == TRUE)
 static const clockid_t CLOCK_ID_ALARM = CLOCK_BOOTTIME;
 #else
@@ -106,7 +107,7 @@ static const clockid_t CLOCK_ID_ALARM = CLOCK_BOOTTIME_ALARM;
 // functions execute serially and not concurrently. As a result, this mutex
 // also protects the |alarms| list.
 static pthread_mutex_t monitor;
-static list_t *alarms;
+static list_t *alarms = NULL;
 static timer_t timer;
 static timer_t wakeup_timer;
 static bool timer_set;
